@@ -16,9 +16,7 @@ echo --- 5. Determinar puertos abiertos                                         
 echo --- 6. Listar aplicaciones asociadas a los puertos                          ---
 echo --- 7. Listar procesos ejecutandose                                         ---
 echo --- 8. Listar conexiones actuales y recientes                               ---
-echo --- 9. Registrar la hora y fecha del sistema al terminar la recoleccion     ---
-echo --- 10.Guardar resultados en archivos                                       ---
-echo --- 11.Salir                                                                ---
+echo --- 9.Salir                                                                ---
 echo -------------------------------------------------------------------------------
 echo -------------------------------------------------------------------------------
 echo -------------------------------------------------------------------------------
@@ -33,9 +31,7 @@ if %opt%==5 goto network
 if %opt%==6 goto apps	
 if %opt%==7 goto process
 if %opt%==8 goto conections
-if %opt%==9 goto enddatetime
-if %opt%==10 goto save
-if %opt%==11 goto exit
+if %opt%==9 goto exit
 echo. El numero "%opt%" no es una opcion valida, por favor intente de nuevo.
 timeout 5
 goto:menu
@@ -44,9 +40,16 @@ goto:menu
 cls
 echo.
 echo.
+echo Historico de 1000 comandos ejecutados:
 doskey /listsize=1000
-echo Historico de 1000 comandos ejecutados >> recoleccion.txt
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
+echo Historico de 1000 comandos ejecutados: >> recoleccion.txt
 doskey /listsize=1000 >> recoleccion.txt
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
+echo.
+echo.
 echo Pulse una tecla para volver al menu 
 pause>nul 
 goto:menu 
@@ -57,9 +60,11 @@ echo.
 echo.
 echo Hora inicio de recoleccion:
 echo %date%-%time%
+echo. >> recoleccion.txt
 echo. >> recoleccion.txt	
 echo Hora inicio de recoleccion >> recoleccion.txt
 echo %date%-%time% >> recoleccion.txt
+echo. >> recoleccion.txt
 echo. >> recoleccion.txt	
 echo.
 echo.
@@ -71,11 +76,13 @@ goto menu
 cls 
 echo.
 echo.
-echo. >> recoleccion.txt	
 echo Los usiarios logueados en el sistema son:
 psloggedon
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt	
 echo Los usiarios logueados en el sistema son: >> recoleccion.txt
 psloggedon >> recoleccion.txt
+echo. >> recoleccion.txt
 echo. >> recoleccion.txt	
 echo.
 echo.
@@ -89,11 +96,30 @@ echo.
 echo. 
 echo Fecha ultimo acceso
 dir /t:a /a /s /o:d c:\
+echo.
+echo.
 echo Fecha creacion
-dir /t:c /a /s /o:d c:\ 
+dir /t:c /a /s /o:d c:\
+echo.
+echo. 
 echo Fecha modificacion
 dir /t:w /a /s /o:d c:\ 
->> recoleccion.txt
+echo.
+echo.
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
+echo Fecha ultimo acceso: >> recoleccion.txt
+dir /t:a /a /s /o:d c:\ >> recoleccion.txt
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
+echo Fecha creacion: >> recoleccion.txt
+dir /t:c /a /s /o:d c:\ >> recoleccion.txt
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
+echo Fecha modificacion: >> recoleccion.txt
+dir /t:w /a /s /o:d c:\ >> recoleccion.txt
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
 echo.
 echo.
 echo Pulse una tecla para volver al menu 
@@ -104,8 +130,10 @@ goto menu
 cls 
 echo.
 echo.
+echo Los puertos abiertos son:
 netstat
->> recoleccion.txt
+echo Los puertos abiertos son: >> recoleccion.txt
+netstat >> recoleccion.txt
 echo.
 echo.
 echo Pulse una tecla para volver al menu 
@@ -116,8 +144,10 @@ goto menu
 cls 
 echo.
 echo.
+echo Las aplicaciones asociadas a los puertos son:
 netstat -b
->> recoleccion.txt
+echo Las aplicaciones asociadas a los puertos son: >> recoleccion.txt
+netstat -b >> recoleccion.txt
 echo.
 echo.
 echo Pulse una tecla para volver al menu 
@@ -128,8 +158,10 @@ goto menu
 cls 
 echo.
 echo.
+echo Lista procesos ejecutandose:
 pslist -t
->> recoleccion.txt
+echo Lista procesos ejecutandose: >> recoleccion.txt
+pslist -t>> recoleccion.txt
 echo.
 echo.
 echo Pulse una tecla para volver al menu 
@@ -140,26 +172,40 @@ goto menu
 cls 
 echo.
 echo.
-arp –a
-nbtstat –c
->> recoleccion.txt
->> recoleccion.txt
+echo Lista de conexiones actuales y recientes:
+%WINDIR%\system32\arp.exe –a
+echo.
+echo.
+%WINDIR%\system32\nbtstat.exe  -c
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
+echo Lista de conexiones actuales y recientes:>>recoleccion.txt
+%WINDIR%\system32\arp.exe –a>> recoleccion.txt
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
+%WINDIR%\system32\nbtstat.exe  -c>> recoleccion.txt
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt
 echo.
 echo.
 echo Pulse una tecla para volver al menu 
 pause>nul 
 goto menu 
 
-:save 
+
+:exit
 cls 
 echo.
 echo.
-dir > recoleccion.txt
+echo Hora de finalizacion de recoleccion:
+echo %date%-%time%
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt	
+echo Hora de finalizacion de recoleccion >> recoleccion.txt
+echo %date%-%time% >> recoleccion.txt
+echo. >> recoleccion.txt
+echo. >> recoleccion.txt	
 echo.
 echo.
-echo Pulse una tecla para volver al menu 
-pause>nul 
-goto menu 
-
-:exit
+timeout 5
     @cls&exit 
