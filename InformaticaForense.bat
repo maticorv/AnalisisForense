@@ -210,5 +210,6 @@ echo. >> recoleccion.txt
 echo. >> recoleccion.txt	
 echo.
 echo.
+echo El prgraama se cerrara
 timeout 5
     @cls&exit 
